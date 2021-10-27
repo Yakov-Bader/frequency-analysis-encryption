@@ -48,16 +48,17 @@ public class readFile {
         BufferedReader br=new BufferedReader(fr);
         int c=0;
         while(( c = br.read()) != -1) {
+            System.out.println("the cap "+(char)c);
             for(int i=0;i<letter.result.length;i++){
-                if ((c>=65&&c<=90)||(c>=97&&c<=122)) {
-                    if(c>=65&&c<=90){
-                        c+=32;
+                if (c>=97&&c<=122) {
+                    if(letter.result[i]==c){
+                        myWriter.write((char)(i+97));
                     }
-                    myWriter.write((char)(i+97));
-                }else if(c==32){
-                    myWriter.write((char)(c));
-                }else{
-                    continue;
+                }else if(c>=65&&c<=90) {
+                    c += 32;
+                    if (letter.result[i] == c) {
+                        myWriter.write((char) (i + 97));
+                    }
                 }
             }
 
