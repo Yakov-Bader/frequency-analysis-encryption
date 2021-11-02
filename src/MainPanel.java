@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.Arrays;
 
 public class MainPanel extends JPanel {
+    JPanel changing;
     JLabel con,conText;
     JButton change,convert;
     JTextField from,to;
@@ -30,8 +31,7 @@ public class MainPanel extends JPanel {
         textArea=new JTextArea(letter.toText,30,40);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setEditable(false);
-
+        textArea.setEditable(true);
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.setBounds(10, 11, 455, 249);
 
@@ -40,17 +40,21 @@ public class MainPanel extends JPanel {
 
         setFocusable(true);
 
+        changing=new JPanel();
+
         con=new JLabel("enter here the letter you want to change ");
         conText=new JLabel("enter the letter you want to change to ");
         from= new JTextField(1);
         to= new JTextField(1);
-        add(con);
-        add(from);
-        add(conText);
-        add(to);
+        changing.add(con);
+        changing.add(from);
+        changing.add(conText);
+        changing.add(to);
         change = new JButton("change");
         change.addActionListener(listener);
-        add(change);
+        changing.add(change);
+
+        add(changing);
     }
 
     private class ButtonListener implements ActionListener {
@@ -59,11 +63,13 @@ public class MainPanel extends JPanel {
             letter.toText="";
             textArea.setText(letter.toText);
             if(event.getActionCommand().equals("change")){
-                for (int i=0;i<letter.result.length;i++){
-                    if(letter.result[i]==from.getText().charAt(0)){
-                        letter.result[i]=to.getText().charAt(0);
-                    }else if(letter.result[i]==to.getText().charAt(0)){
-                        letter.result[i]=from.getText().charAt(0);
+                if(textArea.getText()!=null){
+                    for (int i=0;i<letter.result.length;i++){
+                        if(letter.result[i]==from.getText().charAt(0)){
+                            letter.result[i]=to.getText().charAt(0);
+                        }else if(letter.result[i]==to.getText().charAt(0)){
+                            letter.result[i]=from.getText().charAt(0);
+                        }
                     }
                 }
             }else if(input.getText().equals("input text here")){
@@ -111,9 +117,6 @@ public class MainPanel extends JPanel {
                 }
             }
 
-            for(int j=0;j<letter.result.length;j++){
-                System.out.println("sorted at "+j+" "+(char)letter.result[j]);
-            }
             try {
                 fillFile(letter,input);
             } catch (IOException e) {
@@ -170,6 +173,7 @@ public class MainPanel extends JPanel {
         for(int j=0;j<letter.letterArray.length;j++){
             if(letter.sorted[i]==letter.letterArray[j]){
                 letter.result[i]=j+97;
+                break;
             }
         }
     }
